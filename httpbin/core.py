@@ -116,7 +116,7 @@ template = {
         # "termsOfService": "http://me.com/terms",
         "version": version,
     },
-    "host": "httpbin.org",  # overrides localhost:5000
+    "host": "httpbin.org",  # overrides localhost:5080
     "basePath": "/",  # base bash for blueprint registration
     "schemes": ["https"],
     "protocol": "https",
@@ -1768,7 +1768,7 @@ def a_json_endpoint():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--port", type=int, default=5000)
+    parser.add_argument("--port", type=int, default=5080)
     parser.add_argument("--host", default="127.0.0.1")
     args = parser.parse_args()
     app.run(port=args.port, host=args.host)

@@ -5,7 +5,7 @@ A fork from [httpbin](https://github.com/postmanlabs/httpbin)
 Run locally:
 ```sh
 docker pull allvulnapps/httpbin
-docker run -p 80:80 allvulnapps/httpbin
+docker run -p 5080:5080 allvulnapps/httpbin
 ```
 
 See https://github.com/piyushroshan/httpbin for more information.

@@ -20,7 +20,7 @@ RUN uv sync --frozen
 COPY . /httpbin
 RUN uv sync --frozen
 
-EXPOSE 80
+EXPOSE 5080
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh

@@ -2,4 +2,4 @@ services:
     httpbin:
       build: allvulnapps/httpbin
       ports:
-        - '80:80'
+        - '5080:5080'
