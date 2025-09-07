@@ -1,5 +1,5 @@
 services:
     httpbin:
-      build: '.'
+      build: allvulnapps/httpbin
       ports:
         - '80:80'

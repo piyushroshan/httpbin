@@ -22,7 +22,6 @@ RUN uv sync --frozen
 
 EXPOSE 80
 
-# Create a startup script
-RUN echo '#!/bin/bash\nuv run gunicorn -b 0.0.0.0:80 httpbin:app -k gevent --workers 4' > /start.sh && chmod +x /start.sh
-
-CMD ["/start.sh"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+CMD ["/entrypoint.sh"]
