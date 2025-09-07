@@ -29,8 +29,17 @@ from flask import (
 from six.moves import range as xrange
 from werkzeug.datastructures import WWWAuthenticate, MultiDict
 from werkzeug.http import http_date
-from werkzeug.wrappers import BaseResponse
-from werkzeug.http import parse_authorization_header
+from werkzeug.wrappers import Response as BaseResponse
+# parse_authorization_header was removed from werkzeug, implementing a simple replacement
+def parse_authorization_header(value):
+    """Parse HTTP Authorization header"""
+    if not value:
+        return None
+    try:
+        auth_type, auth_info = value.split(None, 1)
+        return (auth_type, auth_info)
+    except ValueError:
+        return None
 from flasgger import Swagger, NO_SANITIZER
 
 from . import filters
@@ -159,27 +168,6 @@ swagger_config = {
 }
 
 swagger = Swagger(app, sanitizer=NO_SANITIZER, template=template, config=swagger_config)
-
-# Set up Bugsnag exception tracking, if desired. To use Bugsnag, install the
-# Bugsnag Python client with the command "pip install bugsnag", and set the
-# environment variable BUGSNAG_API_KEY. You can also optionally set
-# BUGSNAG_RELEASE_STAGE.
-if os.environ.get("BUGSNAG_API_KEY") is not None:
-    try:
-        import bugsnag
-        import bugsnag.flask
-
-        release_stage = os.environ.get("BUGSNAG_RELEASE_STAGE") or "production"
-        bugsnag.configure(
-            api_key=os.environ.get("BUGSNAG_API_KEY"),
-            project_root=os.path.dirname(os.path.abspath(__file__)),
-            use_ssl=True,
-            release_stage=release_stage,
-            ignore_classes=["werkzeug.exceptions.NotFound"],
-        )
-        bugsnag.flask.handle_exceptions(app)
-    except:
-        app.logger.warning("Unable to initialize Bugsnag exception handling.")
 
 # -----------
 # Middlewares

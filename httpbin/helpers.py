@@ -13,7 +13,6 @@ import re
 import time
 import os
 from hashlib import md5, sha256, sha512
-from werkzeug.http import parse_authorization_header
 from werkzeug.datastructures import WWWAuthenticate
 
 from flask import request, make_response

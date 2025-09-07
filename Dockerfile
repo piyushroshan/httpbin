@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM python:3.12-slim
 
 LABEL name="httpbin"
 LABEL version="0.9.2"
@@ -8,15 +8,21 @@ LABEL org.kennethreitz.vendor="Kenneth Reitz"
 ENV LC_ALL=C.UTF-8
 ENV LANG=C.UTF-8
 
-RUN apt update -y && apt install python3-pip git -y && pip3 install --no-cache-dir pipenv
+# Install uv
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 
-ADD Pipfile Pipfile.lock /httpbin/
+# Set up the project
 WORKDIR /httpbin
-RUN /bin/bash -c "pip3 install --no-cache-dir -r <(pipenv lock -r)"
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen
 
-ADD . /httpbin
-RUN pip3 install --no-cache-dir /httpbin
+# Copy the rest of the application
+COPY . /httpbin
+RUN uv sync --frozen
 
 EXPOSE 80
 
-CMD ["gunicorn", "-b", "0.0.0.0:80", "httpbin:app", "-k", "gevent"]
+# Create a startup script
+RUN echo '#!/bin/bash\nuv run gunicorn -b 0.0.0.0:80 httpbin:app -k gevent --workers 4' > /start.sh && chmod +x /start.sh
+
+CMD ["/start.sh"]

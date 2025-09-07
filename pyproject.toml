@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "httpbin"
+version = "0.9.2"
+description = "HTTP Request and Response Service"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Kenneth Reitz", email = "me@kennethreitz.org"},
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "Flask>=3.1.2",
+    "MarkupSafe>=3.0.0",
+    "decorator>=5.2.0",
+    "itsdangerous>=2.2.0",
+    "six>=1.17.0",
+    "brotli>=1.1.0",
+    "werkzeug>=3.1.0",
+    "gevent>=25.0.0",
+    "flasgger>=0.9.7.1",
+    "pyyaml>=6.0.2",
+    "gunicorn>=23.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "rope>=1.14.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["httpbin*"]
+
+[tool.setuptools.package-data]
+httpbin = ["static/*", "templates/*", "templates/**/*", "VERSION"]
